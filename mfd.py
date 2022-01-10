@@ -65,6 +65,7 @@ def scansystem():
         output= fileincr(".json",drive.strip(":/")+"_drive_files_on_system")
 
         files = recursivescan(drive)
+        print(output)
         filelist = []
         for _files in dictviewtodict(files.values()):
             filelist.append(_files["Path"])
@@ -74,7 +75,8 @@ def scansystem():
             f.writelines(json.dumps(tasks))
         
         hashes = {hash:0 for hash in tasks.keys()}
-        output= fileincr(".json",drive.strip(":")+"_unknown_hashes_on_system")
+        output= fileincr(".json",drive.strip(":/")+"_unknown_hashes_on_system")
+        print(output)
         with open(output, "x") as f:
 
             f.writelines(json.dumps(sql(hashes)))
