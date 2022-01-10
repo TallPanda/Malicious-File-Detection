@@ -57,11 +57,12 @@ def main(dirname:str):
         _main(dirname)
 
 def scansystem():
-    drives = [_+":" for _ in string.ascii_uppercase if os.path.exists(_+":")]
+    drives = [_+":/" for _ in string.ascii_uppercase if os.path.exists(_+":")]
     for drive in drives:
-        output= fileincr(".json",drive.strip(":")+"_drive_files_on_system")
-
+        output= fileincr(".json",drive.strip(":/")+"_drive_files_on_system")
+        print(drive)
         files = recursivescan(drive)
+        print(files)
         filelist = []
         for _files in dictviewtodict(files.values()):
             filelist.append(_files)
