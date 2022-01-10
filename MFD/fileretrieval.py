@@ -14,9 +14,11 @@ from string import ascii_uppercase as az
 
 
 def getexempt():
-    with open("config/exemptfiles","r") as f:
-        return f.readlines()
-
+    if os.path.isfile("config/exemptfiles"):
+        with open("config/exemptfiles","r") as f:
+            return f.readlines()
+    else:
+        return []
 
 def dirscan(dirname:str):### tbd implement asyc or multiprocessing for file scanning scanned dirs get added to a dict which will process everything added to it filles added to a list and dirs get scanned processed dict elemetns get popped asyncio.Event possibly
     filestats = {}# dictionary of all dirscans in this process ## this will probably be a class in future

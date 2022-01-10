@@ -20,7 +20,7 @@ def chunk(fname: str,gigabytes:int=None):
     pass
 
 
-def hashing(fname: str,gigabytes:int=None):# 
+def hashing(fname: str,gigabytes:int=None):
     if gigabytes is None:
         gigabytes=1
     byts = chunk(fname,gigabytes)
