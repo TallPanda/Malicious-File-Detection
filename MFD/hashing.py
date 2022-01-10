@@ -9,18 +9,20 @@ import os
 
 
 def chunk(fname: str,gigabytes:int=None):
-    if os.path.isfile(fname):
-        if gigabytes is None:
-            gigabytes=1
-        with open(fname,"rb") as f:
-            while True:
-                curpos = f.tell()
-                fbytes = f.read((2**10)*gigabytes)# this is 1 gb if gibaytes is 1
-                if(curpos == f.tell()): # if position in file hasnt changed break while true loop
-                    break
-                else:
-                    yield fbytes
-
+    try:
+        if os.path.isfile(fname):
+            if gigabytes is None:
+                gigabytes=1
+            with open(fname,"rb") as f:
+                while True:
+                    curpos = f.tell()
+                    fbytes = f.read((2**10)*gigabytes)# this is 1 gb if gibaytes is 1
+                    if(curpos == f.tell()): # if position in file hasnt changed break while true loop
+                        break
+                    else:
+                        yield fbytes
+    except Exception as e:
+        print(e)
 
 
 def hashing(fname: str,gigabytes:int=None):
@@ -45,3 +47,6 @@ def hashingobj(fname: str,gigabytes:int=None):#
 def hasher(fname: str):# single file
     t = hashing( chunk( fname) )
     return t
+
+for _ in None:
+    pass

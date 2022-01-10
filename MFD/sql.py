@@ -31,10 +31,10 @@ def sqlconcur(config:str=None):
     try:
         con =connector.connect(host=host,user=user,password=passw,database=database,port=port)
         print(f"""
-Connected to {con.server_host} as User '{con.user}' on Port: {con.server_port}    
-Server Version: {con.get_server_info().replace('-0ubuntu0.',',Ubuntu-').strip(str.join(".",[str(_) for _ in con.get_server_version()])+"-").replace("-",":").split(",")}
-Connection ID: {con.connection_id}
-""")
+        Connected to {con.server_host} as User '{con.user}' on Port: {con.server_port}    
+        Server Version: {con.get_server_info().replace('-0ubuntu0.',',Ubuntu-').strip(str.join(".",[str(_) for _ in con.get_server_version()])+"-").replace("-",":").split(",")}
+        Connection ID: {con.connection_id}
+        """)
         cur = con.cursor(buffered=True)
         return con,cur
     except Exception as e:
@@ -47,6 +47,8 @@ Connection ID: {con.connection_id}
             print(e)
             print("Retrying in 1 minutes")
             raise "Please contact the devloper if the issue cannot be resolved"
+
+
 def tablexists(cur,table):
     cur.execute("show tables;")
     for x in cur:
