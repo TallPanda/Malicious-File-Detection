@@ -10,14 +10,17 @@ from MFD.fileretrieval import dictviewtodict, dirscan,recursivescan
 import json
 import os
 import string
-
+from progressbar import ProgressBar
 from MFD.sql import sql
 
 def taskmanager(fnames:list, func) -> dict:# rins a function on items in a list
     tasks = {}
-    for fname in fnames:
-        tasks[fname] = func(fname)
-    return tasks
+    flen = len(fnames)
+    with ProgressBar(max_value=flen) as pb:
+        for n,fname in enumerate(fnames):
+            pb.update(n)
+            tasks[fname] = func(fname)
+        return tasks
 
 def fileincr(ftype: str = None,file: str=None, n:int = None):
     if ftype == None:
@@ -78,4 +81,4 @@ def scansystem():
 
 # print(asyncio.run(hashing("D:/test/signatures.txt")))
 # main("D:/test/")
-scansystem()
+# scansystem()

@@ -9,6 +9,8 @@ import json,os
 import uuid,getpass
 import time
 
+from progressbar.bar import ProgressBar
+
 def getdetails(config:str=None):
     if config == None:
         config = "config/mysql/secure/login.json"
@@ -82,10 +84,15 @@ def sha1exists(cur,id,key):
     return False
 
 def uploadata(cur,id,userdata):
-    for key,value in userdata.items():
-        if not sha1exists(cur,id,key):
-            cur.execute(f"insert into {id} (SHA1, vtstatus) values ('{key}',{value})")
-            print(f"Uploaded {key}:{value}")
+    n = len(userdata.keys())
+    i = 0
+    with ProgressBar(max_value=n) as pb:
+        for key,value in userdata.items():
+            pb.update(i)
+            if not sha1exists(cur,id,key):
+                cur.execute(f"insert into {id} (SHA1, vtstatus) values ('{key}',{value})")
+                print(f"Uploaded {key}:{value}")
+            i+=1
 
 def notfounds(cur,id):
     cur.execute(f"select SHA1 from {id} where (not vtstatus=2 or not vtstatus=3) and SHA1 not in (select SHA1 from uniq);")
