@@ -102,4 +102,3 @@ def sql(userdata,config:str=None):
             makeusertable(cur,id)
             uploadata(cur,id,userdata)
             print(notfounds(cur,id))
-# sql({"6acb8e1d1ea4099d3065b01aaedbcf35d469495b":0})

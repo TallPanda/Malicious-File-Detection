@@ -9,24 +9,14 @@ from MFD.hashing import hasher,hashing
 from MFD.fileretrieval import dictviewtodict, dirscan,recursivescan
 import json
 import os
+import string
 
-def asynchandler(tasks:dict) -> dict:
-    taskdict = {}
-    for task, func in tasks.items():
-        taskdict[task] = func
-    return taskdict
+from MFD.sql import sql
 
-def asyncrunner(taskdict:dict):
-    taskr={}
-    for taskn,task in taskdict.items():
-        task = task
-        taskr[taskn]= task
-    return taskr
-
-def taskmanager(fnames:list) -> dict:
+def taskmanager(fnames:list, func) -> dict:# rins a function on items in a list
     tasks = {}
     for fname in fnames:
-        tasks[fname] = hashing(fname)
+        tasks[fname] = func(fname)
     return tasks
 
 def fileincr(ftype: str = None,file: str=None, n:int = None):
@@ -52,14 +42,12 @@ def _main(dirname:list):
     files = []
     for _files in dictviewtodict(filestats.values()):
         files.append(_files["Path"])
-    tasks = taskmanager(files)
-    taskdict = asynchandler(tasks)
-    fin = asyncrunner(taskdict)
+    tasks = taskmanager(files,hashing)
     log = fileincr()
     print(log)
-    print(fin)
+    print(tasks)
     with open(log,"x") as f:
-        f.writelines(json.dumps(fin))
+        f.writelines(json.dumps(tasks))
 
 def main(dirname:str):
     if dirname[-1] not in ["/","\\"]:
@@ -67,6 +55,24 @@ def main(dirname:str):
         main(dirname)
     else:
         _main(dirname)
-    
+
+def scansystem():
+    drives = [_+":" for _ in string.ascii_uppercase if os.path.exists(_+":")]
+    for drive in drives:
+        output= fileincr(".json",drive.strip(":")+"_drive_files_on_system")
+
+        files = recursivescan(drive)
+        filelist = []
+        for _files in dictviewtodict(files.values()):
+            filelist.append(_files)
+        tasks = taskmanager(filelist)
+
+        with open(output,"x") as f:
+            f.writelines(json.dumps(tasks))
+        
+        hashes = {hash:0 for hash in tasks.keys()}
+        sql(hashes)
+
 # print(asyncio.run(hashing("D:/test/signatures.txt")))
 # main("D:/test/")
+# scansystem()
