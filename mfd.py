@@ -81,4 +81,5 @@ def scansystem():
 
 # print(asyncio.run(hashing("D:/test/signatures.txt")))
 # main("D:/test/")
-# scansystem()
+if __name__ == "__main__":
+    scansystem()
