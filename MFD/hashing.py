@@ -47,6 +47,3 @@ def hashingobj(fname: str,gigabytes:int=None):#
 def hasher(fname: str):# single file
     t = hashing( chunk( fname) )
     return t
-
-for _ in None:
-    pass
