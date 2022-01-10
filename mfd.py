@@ -72,8 +72,9 @@ def scansystem():
         
         hashes = {hash:0 for hash in tasks.keys()}
         output= fileincr(".json",drive.strip(":")+"_unknown_hashes_on_system")
-        with open(output)
-        (sql(hashes))
+        with open(output, "x") as f:
+
+            f.writelines(json.dumps(sql(hashes)))
 
 # print(asyncio.run(hashing("D:/test/signatures.txt")))
 # main("D:/test/")
