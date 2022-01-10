@@ -46,7 +46,7 @@ def dictviewtodict(dictview) -> dict:#python doesnt like the dict nesting so thi
 def recursivescan(dirname:str):
     exempt = getexempt()
     filestats = {}
-    for fname in glob.iglob(dirname + '**/*.*', recursive=True):
+    for fname in glob.iglob(dirname + '**/**/*', recursive=True):
         for _file in exempt:
             if not _file in fname:
                 if not dirname in filestats.keys():#create the list for that directory if none exist
