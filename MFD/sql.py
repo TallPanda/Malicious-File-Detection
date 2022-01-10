@@ -83,15 +83,15 @@ def uploadata(cur,id,userdata):
     for key,value in userdata.items():
         if not sha1exists(cur,id,key):
             cur.execute(f"insert into {id} (SHA1, vtstatus) values ('{key}',{value})")
-            print([_ for _ in cur])
             print(f"Uploaded {key}:{value}")
 
 def notfounds(cur,id):
-    cur.execute(f"select SHA1 from {id} where (not vtstatus=2 or not vtsatus=3) and SHA1 not in (select SHA1 from uniq);")
-    []
+    cur.execute(f"select SHA1 from {id} where (not vtstatus=2 or not vtstatus=3) and SHA1 not in (select SHA1 from uniq);")
+    nfs = []
     for i in cur:
         for n in i:
-            print(n)
+            nfs.append(n)
+    return nfs
 
 
 def sql(userdata,config:str=None):
@@ -102,4 +102,4 @@ def sql(userdata,config:str=None):
             makeusertable(cur,id)
             uploadata(cur,id,userdata)
             print(notfounds(cur,id))
-sql({"6acb8e1d1ea4099d3065b01aaedbcf35d469495b":0})
+# sql({"6acb8e1d1ea4099d3065b01aaedbcf35d469495b":0})
