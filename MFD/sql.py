@@ -1,5 +1,3 @@
-#SELECT A.* FROM A WHERE ID NOT IN(SELECT ID FROM B) something like this
-#
 # This code provides provides the the functions necessary with communicationg with the mysql database
 # @author  TallPanda
 # @version 1.03 10th of January 2022
