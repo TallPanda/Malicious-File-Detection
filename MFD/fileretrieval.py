@@ -12,6 +12,12 @@ import time
 import glob
 from string import ascii_uppercase as az
 
+
+def getexempt():
+    with open("config/exemptfiles","r") as f:
+        return f.readlines()
+
+
 def dirscan(dirname:str):### tbd implement asyc or multiprocessing for file scanning scanned dirs get added to a dict which will process everything added to it filles added to a list and dirs get scanned processed dict elemetns get popped asyncio.Event possibly
     filestats = {}# dictionary of all dirscans in this process ## this will probably be a class in future
     # dirs =[]
@@ -36,15 +42,18 @@ def dictviewtodict(dictview) -> dict:#python doesnt like the dict nesting so thi
     return _dict
 
 def recursivescan(dirname:str):
+    exempt = getexempt()
     filestats = {}
     for fname in glob.iglob(dirname + '**/*.*', recursive=True):
-        if not dirname in filestats.keys():#create the list for that directory if none exist
-                filestats[dirname] = []
-        if os.path.isdir(fname):# globs return folders so this is needed
-            continue
-        filestats[dirname].append({
-            "Path":fname
-            })
+        for _file in exempt:
+            if not _file in fname:
+                if not dirname in filestats.keys():#create the list for that directory if none exist
+                        filestats[dirname] = []
+                if os.path.isdir(fname):# globs return folders so this is needed
+                    continue
+                filestats[dirname].append({
+                    "Path":fname.replace("\\","/")
+                    })
     return filestats
 # print(recursivescan("D:/test/"))
 # print([_+":" for _ in az if os.path.exists(_+":")]) # finds drives

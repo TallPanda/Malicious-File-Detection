@@ -6,6 +6,12 @@
 # @platform   Python 3.10.1
 from hashlib import sha1
 
+from MFD.fileretrieval import  recursivescan
+
+def getexempt():
+    with open("config/exemptfiles","r") as f:
+        return f.readlines()
+
 def chunk(fname: str,gigabytes:int=None):
     if gigabytes is None:
         gigabytes=1
@@ -42,3 +48,6 @@ def hashingobj(fname: str,gigabytes:int=None):#
 def hasher(fname: str):# single file
     t = hashing( chunk( fname) )
     return t
+
+for files in getexempt():
+    for _files in recursivescan()
