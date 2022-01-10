@@ -65,7 +65,7 @@ def scansystem():
         filelist = []
         for _files in dictviewtodict(files.values()):
             filelist.append(_files)
-        tasks = taskmanager(filelist)
+        tasks = taskmanager(filelist,hashing)
 
         with open(output,"x") as f:
             f.writelines(json.dumps(tasks))
@@ -75,4 +75,4 @@ def scansystem():
 
 # print(asyncio.run(hashing("D:/test/signatures.txt")))
 # main("D:/test/")
-# scansystem()
+scansystem()
