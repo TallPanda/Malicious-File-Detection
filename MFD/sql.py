@@ -87,10 +87,12 @@ def uploadata(cur,id,userdata):
 
 def notfounds(cur,id):
     cur.execute(f"select SHA1 from {id} where (not vtstatus=2 or not vtstatus=3) and SHA1 not in (select SHA1 from uniq);")
-    nfs = []
+    nfs = {}
     for i in cur:
-        for n in i:
-            nfs.append(n)
+        # for n in i:
+        #     nfs.append(n)
+        key,value =i
+        nfs[key] = value
     return nfs
 
 
@@ -101,4 +103,4 @@ def sql(userdata,config:str=None):
         with cur as cur:
             makeusertable(cur,id)
             uploadata(cur,id,userdata)
-            print(notfounds(cur,id))
+            return(notfounds(cur,id))
