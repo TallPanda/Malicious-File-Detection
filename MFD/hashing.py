@@ -33,3 +33,6 @@ def hashing(fname: str,gigabytes:int=None):
     for b in byts:
         h.update(b)
     return h.hexdigest()
+
+def hasher(fname: str):# just passes chunk through hashing
+    return hashing( chunk( fname) )

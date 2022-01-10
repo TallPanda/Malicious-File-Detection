@@ -4,6 +4,7 @@ Mongodbstuff
 config/mysql/secure/login*.json
 test.py
 MFD_Log*.log
+vt-api.json
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

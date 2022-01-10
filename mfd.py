@@ -60,9 +60,10 @@ def main(dirname:str):
         _main(dirname)
 
 def scansystem():# Scans the file system
-    drives = [_+":/" for _ in string.ascii_uppercase if os.path.exists(_+":/")]
+    # drives = [_+":/" for _ in string.ascii_uppercase if os.path.exists(_+":/")]
+    drives =["D:/test/"]
     for drive in drives:
-        output= fileincr(".json",drive.strip(":/")+"_drive_files_on_system")
+        output= fileincr(".json",drive.replace(":/","_").replace("/","")+"_drive_files_on_system")
 
         files = recursivescan(drive)
         print(output)
@@ -73,12 +74,11 @@ def scansystem():# Scans the file system
 
         with open(output,"x") as f:
             f.writelines(json.dumps(tasks))
-        
-        hashes = {hash:0 for hash in tasks.keys()}
-        output= fileincr(".json",drive.strip(":/")+"_unknown_hashes_on_system")
+        hashes = {hash:[0,fname] for fname,hash in tasks.items()}
+        print(hashes)
+        output= fileincr(".json",drive.replace(":/","_").replace("/","")+"_unknown_hashes_on_system")
         print(output)
         with open(output, "x") as f:
-
             f.writelines(json.dumps(sql(hashes)))
 
 if __name__ == "__main__":

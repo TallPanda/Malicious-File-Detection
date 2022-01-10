@@ -58,7 +58,7 @@ def tablexists(cur,table):# checks is table exists
 
 def makeusertable(cur,id):# makes a table for the users data
     if not tablexists(cur,id):
-        cur.execute(f"create Table {id}(SHA1 VARCHAR(255) UNIQUE not null, vtstatus int not null default 0, primary key (SHA1));")
+        cur.execute(f"create Table {id}(SHA1 VARCHAR(255) UNIQUE not null, vtstatus int not null default 0, fname  VARCHAR(255), primary key (SHA1));")
         print(f"Table {id} created.")
     else:
         inp = input(f"Table: {id} already exists\nDo you want to recreate the table?(Y/N)\n")
@@ -68,7 +68,7 @@ def makeusertable(cur,id):# makes a table for the users data
         match inp.lower():
             case "y":
                 cur.execute(f"drop Table {id};")
-                cur.execute(f"create Table {id}(SHA1 VARCHAR(255) UNIQUE not null, vtstatus int not null default 0, primary key (SHA1));")
+                cur.execute(f"create Table {id}(SHA1 VARCHAR(255) UNIQUE not null, vtstatus int not null default 0, fname  VARCHAR(255), primary key (SHA1));")
                 print(f"Table {id} created.")
             case "n":
                 print(f"Skipping table {id}")
@@ -87,17 +87,21 @@ def uploadata(cur,id,userdata):# Uploads the sha1 hash along with the vt status 
     with ProgressBar(max_value=n) as pb:
         for key,value in userdata.items():
             pb.update(i)
+            value,fname = list(value)
             if not sha1exists(cur,id,key):
-                cur.execute(f"insert into {id} (SHA1, vtstatus) values ('{key}',{value})")
+                cur.execute(f"insert into {id} (SHA1, vtstatus, fname) values ('{key}',{value},'{fname}')")
             i+=1
 
 def notfounds(cur,id):# retuns hashes not found in the benign file database
-    cur.execute(f"select SHA1 from {id} where (not vtstatus=2 or not vtstatus=3) and SHA1 not in (select SHA1 from uniq);")
+    cur.execute(f"select * from {id} where (not vtstatus=2 or not vtstatus=3) and SHA1 not in (select SHA1 from uniq);")
     nfs = {}
-    for i in cur:
-        key,value =i
-        nfs[key] = value
-    return nfs
+    try:
+        for i in cur:
+            key,value,fname =i
+            nfs[key] = [value,fname]
+        return nfs
+    except:
+        return nfs
 
 
 def sql(userdata,config:str=None):
