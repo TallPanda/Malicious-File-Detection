@@ -1,2 +1,4 @@
 asyncio
 mysql-connector-python
+progressbar2
+vt-py

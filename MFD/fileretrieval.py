@@ -57,5 +57,3 @@ def recursivescan(dirname:str):
                     "Path":fname.replace("\\","/")
                     })
     return filestats
-# print(recursivescan("D:/test/"))
-# print([_+":" for _ in az if os.path.exists(_+":")]) # finds drives
