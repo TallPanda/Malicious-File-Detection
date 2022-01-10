@@ -91,7 +91,6 @@ def uploadata(cur,id,userdata):
             pb.update(i)
             if not sha1exists(cur,id,key):
                 cur.execute(f"insert into {id} (SHA1, vtstatus) values ('{key}',{value})")
-                print(f"Uploaded {key}:{value}")
             i+=1
 
 def notfounds(cur,id):
