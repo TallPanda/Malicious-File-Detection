@@ -2,7 +2,7 @@
 # 
 #
 # @author  TallPanda
-# @version 1.02 10th of January 2022
+# @version 1.03 10th of January 2022
 # @platform   Python 3.10.1
 from hashlib import sha1
 import os
@@ -33,17 +33,3 @@ def hashing(fname: str,gigabytes:int=None):
     for b in byts:
         h.update(b)
     return h.hexdigest()
-
-def hashingobj(fname: str,gigabytes:int=None):# 
-    if gigabytes is None:
-        gigabytes=1
-    byts = chunk(fname,gigabytes)
-    h = sha1()
-    for b in byts:
-        h.update(b)
-    return h
-
-
-def hasher(fname: str):# single file
-    t = hashing( chunk( fname) )
-    return t

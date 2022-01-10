@@ -2,7 +2,7 @@
 #
 # This code provides provides the the functions necessary with communicationg with the mysql database
 # @author  TallPanda
-# @version 1.02 10th of January 2022
+# @version 1.03 10th of January 2022
 # @platform   Python 3.10.1
 from mysql import connector
 import json,os
@@ -11,7 +11,7 @@ import time
 
 from progressbar.bar import ProgressBar
 
-def getdetails(config:str=None):
+def getdetails(config:str=None):# gets the details of from the login.json file
     if config == None:
         config = "config/mysql/secure/login.json"
     if not os.path.isfile(config):
@@ -27,7 +27,7 @@ def getdetails(config:str=None):
     id = f"{getpass.getuser()}_{uuid.getnode()}"
     return id,host,passw,user,database,port
 
-def sqlconcur(config:str=None):    
+def sqlconcur(config:str=None):# returns the console and cursor object for the mysql package
     host,passw,user,database,port = getdetails(config)[1:]
 
     try:
@@ -51,7 +51,7 @@ def sqlconcur(config:str=None):
             raise "Please contact the devloper if the issue cannot be resolved"
 
 
-def tablexists(cur,table):
+def tablexists(cur,table):# checks is table exists
     cur.execute("show tables;")
     for x in cur:
         if table in x:
@@ -76,14 +76,14 @@ def makeusertable(cur,id):# makes a table for the users data
                 print(f"Skipping table {id}")
 
 
-def sha1exists(cur,id,key):
+def sha1exists(cur,id,key):# checks if sha1 already exists
     cur.execute(f"select * from {id} where SHA1='{key}'")
     for message in cur:
         if key in message:
             return True
     return False
 
-def uploadata(cur,id,userdata):
+def uploadata(cur,id,userdata):# Uploads the sha1 hash along with the vt status 0 by default meaning not uploaded
     n = len(userdata.keys())
     i = 0
     with ProgressBar(max_value=n) as pb:
@@ -93,12 +93,10 @@ def uploadata(cur,id,userdata):
                 cur.execute(f"insert into {id} (SHA1, vtstatus) values ('{key}',{value})")
             i+=1
 
-def notfounds(cur,id):
+def notfounds(cur,id):# retuns hashes not found in the benign file database
     cur.execute(f"select SHA1 from {id} where (not vtstatus=2 or not vtstatus=3) and SHA1 not in (select SHA1 from uniq);")
     nfs = {}
     for i in cur:
-        # for n in i:
-        #     nfs.append(n)
         key,value =i
         nfs[key] = value
     return nfs

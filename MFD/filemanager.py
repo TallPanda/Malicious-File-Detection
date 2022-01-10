@@ -2,7 +2,7 @@
 # 
 #
 # @author  TallPanda
-# @version 1.02 10th of January 2022
+# @version 1.03 10th of January 2022
 # @platform   Python 3.10.1
 from datetime import date
 class fileman:

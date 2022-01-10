@@ -2,7 +2,7 @@
 # Malicious File detection provided by this package
 #
 # @author  TallPanda
-# @version 1.02 10th of January 2022
+# @version 1.03 10th of January 2022
 # @platform   Python 3.10.1
 
 from MFD.hashing import hasher,hashing
@@ -13,7 +13,7 @@ import string
 from progressbar import ProgressBar
 from MFD.sql import sql
 
-def taskmanager(fnames:list, func) -> dict:# rins a function on items in a list
+def taskmanager(fnames:list, func) -> dict:# runs a function on items in a list
     tasks = {}
     flen = len(fnames)
     with ProgressBar(max_value=flen) as pb:
@@ -22,7 +22,7 @@ def taskmanager(fnames:list, func) -> dict:# rins a function on items in a list
             tasks[fname] = func(fname)
         return tasks
 
-def fileincr(ftype: str = None,file: str=None, n:int = None):
+def fileincr(ftype: str = None,file: str=None, n:int = None):# incrementally generates file names if the file already exists
     if ftype == None:
         ftype = ".log"
     if file == None:
@@ -59,7 +59,7 @@ def main(dirname:str):
     else:
         _main(dirname)
 
-def scansystem():
+def scansystem():# Scans the file system
     drives = [_+":/" for _ in string.ascii_uppercase if os.path.exists(_+":/")]
     for drive in drives:
         output= fileincr(".json",drive.strip(":/")+"_drive_files_on_system")
@@ -81,7 +81,5 @@ def scansystem():
 
             f.writelines(json.dumps(sql(hashes)))
 
-# print(asyncio.run(hashing("D:/test/signatures.txt")))
-# main("D:/test/")
 if __name__ == "__main__":
     scansystem()

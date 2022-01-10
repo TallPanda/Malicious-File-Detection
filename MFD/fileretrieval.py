@@ -2,7 +2,7 @@
 # Malicious File detection provided by this package
 #
 # @author  TallPanda
-# @version 1.02 10th of January 2022
+# @version 1.03 10th of January 2022
 # @platform   Python 3.10.1
 
 
@@ -13,20 +13,18 @@ import glob
 from string import ascii_uppercase as az
 
 
-def getexempt():
+def getexempt():# gets the list of exempt files
     if os.path.isfile("config/exemptfiles"):
         with open("config/exemptfiles","r") as f:
             return f.readlines()
     else:
         return []
 
-def dirscan(dirname:str):### tbd implement asyc or multiprocessing for file scanning scanned dirs get added to a dict which will process everything added to it filles added to a list and dirs get scanned processed dict elemetns get popped asyncio.Event possibly
-    filestats = {}# dictionary of all dirscans in this process ## this will probably be a class in future
-    # dirs =[]
+def dirscan(dirname:str):
+    filestats = {}# dictionary of all dirscans in this process
     for path in (os.scandir(dirname)):
         if path.is_dir() == True:
             continue
-            # dirs.append(path.name)
         else:
             if not dirname in filestats.keys():#create the list for that directory if none exist
                 filestats[dirname] = []
@@ -43,7 +41,7 @@ def dictviewtodict(dictview) -> dict:#python doesnt like the dict nesting so thi
     _dict = list(dictview)[0]
     return _dict
 
-def recursivescan(dirname:str):
+def recursivescan(dirname:str):# Scans recursivly for files on the system
     exempt = getexempt()
     filestats = {}
     for fname in glob.iglob(dirname + '**/**/*', recursive=True):
