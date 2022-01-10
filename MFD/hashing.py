@@ -22,7 +22,7 @@ def chunk(fname: str,gigabytes:int=None):
                     else:
                         yield fbytes
     except Exception as e:
-        print(e)
+        pass
 
 
 def hashing(fname: str,gigabytes:int=None):
