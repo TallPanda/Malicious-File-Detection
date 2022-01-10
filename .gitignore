@@ -8,6 +8,8 @@ MFD_Log*.log
 __pycache__/
 *.py[cod]
 *$py.class
+*_unknown_hashes*
+*_drive_files*
 
 # C extensions
 *.so
